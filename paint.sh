@@ -11,18 +11,19 @@ A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7
 #######################################################################################
 
 DISPLAY_TIME_LIST="1d 1w 1m 1y"
-
+TYPE="MAX"
+TYPE="AVERAGE"
 if [ "x$CUSTOMER" == "xadmin" ]; then
     while true; do
 	    for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 		test -r $RRDFILE || continue
 		RRDFILE_BNAME="$(basename $RRDFILE)"
 		RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
-		MACHINE_IP="$(echo $RRDFILE_BNAME_BODY | sed 's|_||' | sed 's|\-|\.|')"
+		MACHINE_IP="$(echo $RRDFILE_BNAME_BODY | sed 's|_||' | sed 's|\-|\.|g')"
 		for DISPLAY_TIME in $DISPLAY_TIME_LIST; do
 		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
-			--title "cpu load" \
+			--title "$MACHINE_IP ---> cpu load" \
 			--watermark " $MACHINE_IP @ $(date) " \
 			-h 200 -w 800 \
 			--rigid \
@@ -30,7 +31,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "cpu load in %" \
-			DEF:cpuload=$RRDFILE:cpuload:MAX \
+			DEF:cpuload=$RRDFILE:cpuload:$TYPE \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
