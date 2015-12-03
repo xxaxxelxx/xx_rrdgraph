@@ -23,7 +23,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 		for DISPLAY_TIME in $DISPLAY_TIME_LIST; do
 		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
-			--title "$MACHINE_IP ---> cpu load" \
+			--title "$MACHINE_IP cpu load" \
 			--watermark " $MACHINE_IP @ $(date) " \
 			-h 200 -w 800 \
 			--rigid \
