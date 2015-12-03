@@ -33,7 +33,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadmin=cpuload,MINIMUM \
-			GPRINT:cpuloadmax:%6.0lf%S \
+			GPRINT:cpuloadmax:MAX %6.0lf %S \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
 	    done
