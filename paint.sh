@@ -32,6 +32,8 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--vertical-label "CPU load in %" \
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
+			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadmin=cpuload,MINIMUM \
+			GPRINT:cpuloadmax:MAX %6.0lf%S GPRINT:cpuloadmin:MIN %6.0lf%S\c \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
 	    done
