@@ -34,7 +34,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
 			GPRINT:cpuloadmax:"%6.0lf%S%% MAX" GPRINT:cpuloadavg:"%6.0lf%S%% AVG" GPRINT:cpuloadmin:"%6.0lf%S%% MIN\\c" \
-			LINE1:cpuload#${A_COLOR_DARK[1]}:
+			LINE1:cpuload#${A_COLOR_DARK[5]}:
 		done
 	    done
 	sleep $LOOP
