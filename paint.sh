@@ -26,14 +26,13 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			-h 200 -w 800 \
 			--rigid \
 			--upper-limit 100 \
-			--pango-markup \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "CPU load in %" \
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
-			GPRINT:cpuloadmax:%6.0lf${PANGO_SPACE}%%${PANGO_SPACE}MAX GPRINT:cpuloadavg:%6.0lf${PANGO_SPACE}%%${PANGO_SPACE}AVG GPRINT:cpuloadmin:%6.0lf${PANGO_SPACE}%%${PANGO_SPACE}MIN\l \
+			GPRINT:cpuloadmax:MAX%6.0lf%%%S GPRINT:cpuloadavg:AVG:%6.0lf%%%S GPRINT:cpuloadmin:MIN%6.0lf%%%S \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
 	    done
@@ -44,6 +43,7 @@ else
 	sleep $LOOP
     done
 fi
+#			--pango-markup \
 
 exit
 ################################################################################################################################
