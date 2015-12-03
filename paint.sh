@@ -9,7 +9,7 @@ test -z $CUSTOMER && exit;
 A_COLOR_DARK=(  000000 CC3118 CC7016 C9B215 8FBC8F 24BC14 1598C3 B415C7 C71585 4D18E4 )
 A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7648EC )
 #######################################################################################
-
+PANGO_SPACE='&#32;'
 DISPLAY_TIME_LIST="1d 1w 5w 1y"
 if [ "x$CUSTOMER" == "xadmin" ]; then
     while true; do
@@ -33,7 +33,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadmin=cpuload,MINIMUM \
-			GPRINT:cpuloadmax:MAX %6.0lf %S \
+			GPRINT:cpuloadmax:MAX${PANGO_SPACE}%6.0lf${PANGO_SPACE}%S \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
 	    done
