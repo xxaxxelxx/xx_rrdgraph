@@ -25,6 +25,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--watermark " $MACHINE_IP @ $(date) " \
 			-h 200 -w 800 \
 			--rigid \
+			--pango-markup \
 			--upper-limit 100 \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
@@ -32,7 +33,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
-			GPRINT:cpuloadmax:<span foreground="blue" size="x-large">Blue text</span> is <i>cool</i> \
+			GPRINT:cpuloadmax:MAX%s%6.0lf%S%% \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
 	    done
