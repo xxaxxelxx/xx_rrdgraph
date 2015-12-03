@@ -20,7 +20,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 		RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
 		MACHINE_IP="$(echo $RRDFILE_BNAME_BODY | sed 's|_||' | sed 's|\-|\.|')"
 		for DISPLAY_TIME in $DISPLAY_TIME_LIST; do
-		    rrdtool graph $RRDFILE_BNAME_BODY.png --slope-mode \
+		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
 			--title "cpu load" \
 			--watermark " $MACHINE_IP @ $(date) " \
