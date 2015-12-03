@@ -5,8 +5,8 @@ CUSTOMER=$1
 #LINKED_CONTAINER=$(env | grep '_ENV_' | head -n 1 | awk '{print $1}' | sed 's/_ENV_.*//')
 #LB_HOST="$(cat /etc/hosts | grep -iw ${LINKED_CONTAINER} | awk '{print $1}')"
 
-./paint.sh $LOOP $CUSTOMER
+#./paint.sh $LOOP $CUSTOMER
 
-#bash
+bash
 
 exit
