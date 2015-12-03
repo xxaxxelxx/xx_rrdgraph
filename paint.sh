@@ -31,7 +31,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "cpu load in %" \
-			DEF:cpuload=$RRDFILE:cpuload:$TYPE \
+			DEF:cpuload=$RRDFILE:cpuload:MAX \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
