@@ -25,6 +25,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--watermark " $MACHINE_IP @ $(date) " \
 			-h 200 -w 800 \
 			--rigid \
+			--upper-limit 100 \
 			--pango-markup \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
