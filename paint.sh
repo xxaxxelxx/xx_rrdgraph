@@ -32,7 +32,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
-			GPRINT:cpuloadmax:MAX%6.0lf%S%% \
+			GPRINT:cpuloadmax:<span foreground="blue" size="x-large">Blue text</span> is <i>cool</i> \
 			LINE1:cpuload#${A_COLOR_DARK[1]}:
 		done
 	    done
@@ -45,6 +45,7 @@ else
 fi
 #			--pango-markup \
 #			GPRINT:cpuloadmax:MAX%6.0lf%%%S GPRINT:cpuloadavg:AVG:%6.0lf%%%S GPRINT:cpuloadmin:MIN%6.0lf%%%S \
+#			GPRINT:cpuloadmax:MAX%6.0lf%S%% \
 
 exit
 ################################################################################################################################
