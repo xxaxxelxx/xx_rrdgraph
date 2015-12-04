@@ -83,7 +83,7 @@ else
 	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||')"
 	    MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
 	    PADDEDSPACELEN=$(($MAXPRINTLEN - ${#MOUNT_PRINT}))
-	    PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n '\ '; done)"
+	    PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n '&#32;'; done)"
 	    
 	    echo "$MOUNT_ID" | grep '\-ch' > /dev/null
 	    if [ $? -ne 0 ]; then
