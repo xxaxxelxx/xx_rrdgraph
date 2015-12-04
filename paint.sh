@@ -103,6 +103,7 @@ else
 		--end now --start end-${DISPLAY_TIME} \
 		--vertical-label "listeners" \
 		$DEFLINE \
+		$CDEFLINE \
 		$AREALINE \
 		$OUTLINE
 	done
