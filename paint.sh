@@ -63,8 +63,9 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 else
     while true; do
 	# create the lines
-	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";AREALINE=""
+	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";AREALINE="";NUM=0
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
+	    NUM=$(($NUM + 1))
 	    test -r $RRDFILE || continue
 	    RRDFILE_BNAME="$(basename $RRDFILE)"
 	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
@@ -74,7 +75,7 @@ else
 	    echo "$MOUNT_ID" | grep '\-ch' > /dev/null
 	    if [ $? -ne 0 ]; then
 		echo "def lining simulcats..."
-		DEFLINE="$DEFLINE DEF:${RRDFILE_BNAME_BODY}=${RRDFILE}:${MOUNT_ID}:MAX"
+		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
 #		echo "cdef lining simulcats..."
 #		if [ "x$MOUNT_ID_PREV" == "x" ]; then
 #		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}"
@@ -82,7 +83,7 @@ else
 #		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID},+"
 #		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}:${MOUNT_PRINT}:STACK"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}#${A_COLOR_DARK[$NUM]}:${MOUNT_PRINT}:STACK"
 	    else
 		    echo "lining channels..."
 	    fi
