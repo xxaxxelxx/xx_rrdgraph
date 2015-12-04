@@ -45,11 +45,12 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "Bandwidth load in kbps" \
+			--alt-autoscale-max \
 			DEF:bw=$RRDFILE:bw:MAX \
 			DEF:bwlimit=$RRDFILE:bwlimit:MAX \
 			AREA:bw#${A_COLOR_LIGHT[1]}:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
-			GPRINT:bwmax:"%6.0lf%Skbps MAX" GPRINT:bwavg:"%6.0lf%Skbps AVG" GPRINT:bwmin:"%6.0lf%Skbps MIN\\c" \
+			GPRINT:bwmax:"%6.0lf%skbps MAX" GPRINT:bwavg:"%6.0lf%skbps AVG" GPRINT:bwmin:"%6.0lf%skbps MIN\\c" \
 			LINE1:bwlimit#${A_COLOR_DARK[3]}:
 		done
 	    done
