@@ -1,6 +1,8 @@
 #!/bin/bash
 LOOP=$1
 CUSTOMER=$2
+LOOP=300
+CUSTOMER=admin
 test -z $LOOP && exit;
 test -z $CUSTOMER && exit;
 
@@ -48,10 +50,11 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--alt-autoscale-max \
 			DEF:bw=$RRDFILE:bw:MAX \
 			DEF:bwlimit=$RRDFILE:bwlimit:MAX \
-			AREA:bw#${A_COLOR_LIGHT[1]}:"Bandwidth load in kbps" \
+			AREA:bw#${A_COLOR_LIGHT[3]}:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
 			GPRINT:bwmax:"%6.0lf kbps MAX" GPRINT:bwavg:"%6.0lf kbps AVG" GPRINT:bwmin:"%6.0lf kbps MIN\\c" \
-			LINE1:bwlimit#${A_COLOR_DARK[3]}:
+			LINE1:bw#${A_COLOR_DARK[3]}: \
+			LINE1:bwlimit#${A_COLOR_DARK[1]}:
 		done
 	    done
 	sleep $LOOP
