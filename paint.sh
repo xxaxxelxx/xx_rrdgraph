@@ -63,7 +63,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 else
     while true; do
 	# create the lines
-	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";AREALINE="";OUTLINE="";NUM=0
+	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";AREALINE="";OUTLINE="";NUM=0;TESTLINE=""
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    NUM=$(($NUM + 1))
 	    test -r $RRDFILE || continue
@@ -77,15 +77,16 @@ else
 		echo "def lining simulcats..."
 		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
 #		echo "cdef lining simulcats..."
+		TESTLINE="$CDEFLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$NUM,+"
 #		if [ "x$MOUNT_ID_PREV" == "x" ]; then
-#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}"
+#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
 #		else
-#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID},+"
-		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID},$NUM,+"
+#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
+##		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test,$NUM,+"
 #		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}show#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK"
-		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}::STACK"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK"
+		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}test#${A_COLOR_DARK[$NUM]}::STACK"
 	    else
 		    echo "lining channels..."
 	    fi
@@ -103,7 +104,7 @@ else
 		--end now --start end-${DISPLAY_TIME} \
 		--vertical-label "listeners" \
 		$DEFLINE \
-		$CDEFLINE \
+		$TESTLINE \
 		$AREALINE \
 		$OUTLINE
 	done
