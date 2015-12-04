@@ -77,7 +77,7 @@ else
 		echo "def lining simulcats..."
 		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
 #		echo "cdef lining simulcats..."
-		TESTLINE="$CDEFLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$NUM,+"
+		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$NUM,+"
 #		if [ "x$MOUNT_ID_PREV" == "x" ]; then
 #		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
 #		else
