@@ -106,6 +106,7 @@ else
 		--vertical-label "listeners" \
 		$DEFLINE \
 		$TESTLINE \
+		$CDEFLINE \
 		$AREALINE \
 		$OUTLINE
 	done
