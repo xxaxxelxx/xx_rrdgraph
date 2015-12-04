@@ -63,7 +63,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 else
     while true; do
 	# create the lines
-	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0;TESTLINE=""
+	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0;TESTLINE="";TNUM=0
 	MAXPRINTLEN=0
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    test -r $RRDFILE || continue
@@ -76,6 +76,7 @@ else
 	done
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    NUM=$(($NUM + 1))
+	    TNUM=$(($TNUM + 21))
 	    test -r $RRDFILE || continue
 	    RRDFILE_BNAME="$(basename $RRDFILE)"
 	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
@@ -89,7 +90,7 @@ else
 	    if [ $? -ne 0 ]; then
 		echo "def lining simulcats..."
 		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
-		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$NUM,+"
+		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
 		if [ "x$MOUNT_ID_PREV" == "x" ]; then
 		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
 		else
