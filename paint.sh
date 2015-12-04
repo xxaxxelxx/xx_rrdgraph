@@ -98,11 +98,11 @@ else
 		if [ "x$MOUNT_ID_PREV" == "x" ]; then
 		    S_CDEFLINE="$S_CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
 		else
-		    S_CDEFLINE="$S_CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
+		    S_CDEFLINE="$S_CDEFLINE CDEF:${MOUNT_ID}show:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
 		fi
 		echo "area lining simulcats..."
 		S_AREALINE="$S_AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
-		S_OUTLINE="$S_OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
+		S_OUTLINE="$S_OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}: VDEF:ALLsimulMAX=${MOUNT_ID}show,MAXIMUM"
 	    else
 		C_DEFLINE="$C_DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
 		C_TESTLINE="$C_TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
@@ -134,8 +134,10 @@ else
 		$S_DEFLINE \
 		$S_TESTLINE \
 		$S_CDEFLINE \
-		$S_AREALINE \
-		$S_OUTLINE
+		$S_AREALINE  GPRINT:ALLsimulMAX:MAX\:%6.0lf\c \
+		$S_OUTLINE \
+
+
 	    rrdtool graph /customer/$CUSTOMER/$CUSTOMER.channel.${DISPLAY_TIME}.png --slope-mode \
 		--font DEFAULT:7: \
 		--title "$CUSTOMER // Channel listeners" \
