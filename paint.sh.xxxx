@@ -9,8 +9,8 @@ test -z $CUSTOMER && exit;
 # COLORS ##############################################################################
 #		       1      2      3      4      5      6      7      8      8      #
 #		       RED    ORANGE YELLOW DGREEN GREEN  BLUE   PINK   VIOLET PURPLE #	
-A_COLOR_DARK=(  000000 CC3118 CC7016 C9B215 8FBC8F 24BC14 1598C3 B415C7 C71585 4D18E4 000000 CC3118 CC7016 C9B215 8FBC8F 24BC14 1598C3 B415C7 C71585 4D18E4)
-A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7648EC 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7648EC)
+A_COLOR_DARK=(  000000 CC3118 CC7016 C9B215 8FBC8F 24BC14 1598C3 B415C7 C71585 4D18E4 )
+A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7648EC )
 #######################################################################################
 PANGO_SPACE='&#32;'
 DISPLAY_TIME_LIST="1d 1w 5w 1y"
@@ -63,11 +63,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 else
     while true; do
 	# create the lines
-#	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0;TESTLINE="";TNUM=0
-	S_DEFLINE="";S_CDEFLINE="";S_AREALINE="";S_OUTLINE="";S_TESTLINE=""
-	C_DEFLINE="";C_CDEFLINE="";C_AREALINE="";C_OUTLINE="";C_TESTLINE=""
-	NUM=0;TNUM=0
-	MOUNT_ID_PREV="";MOUNT_ID=""
+	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0;TESTLINE="";TNUM=0
 	MAXPRINTLEN=0
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    test -r $RRDFILE || continue
@@ -93,27 +89,17 @@ else
 	    echo "$MOUNT_ID" | grep '\-ch' > /dev/null
 	    if [ $? -ne 0 ]; then
 		echo "def lining simulcats..."
-		S_DEFLINE="$S_DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
-		S_TESTLINE="$S_TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
+		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
+		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
 		if [ "x$MOUNT_ID_PREV" == "x" ]; then
-		    S_CDEFLINE="$S_CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
 		else
-		    S_CDEFLINE="$S_CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
 		fi
 		echo "area lining simulcats..."
-		S_AREALINE="$S_AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
-		S_OUTLINE="$S_OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
+		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 	    else
-		C_DEFLINE="$C_DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
-		C_TESTLINE="$C_TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
-		if [ "x$MOUNT_ID_PREV" == "x" ]; then
-		    C_CDEFLINE="$C_CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
-		else
-		    C_CDEFLINE="$C_CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
-		fi
-		echo "area lining simulcats..."
-		C_AREALINE="$C_AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
-		C_OUTLINE="$C_OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 		    echo "lining channels..."
 	    fi
 	done
@@ -131,28 +117,11 @@ else
 		-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 		--end now --start end-${DISPLAY_TIME} \
 		--vertical-label "listeners" \
-		$S_DEFLINE \
-		$S_TESTLINE \
-		$S_CDEFLINE \
-		$S_AREALINE \
-		$S_OUTLINE
-	    rrdtool graph /customer/$CUSTOMER/$CUSTOMER.channel.${DISPLAY_TIME}.png --slope-mode \
-		--font DEFAULT:7: \
-		--title "$CUSTOMER // Channel listeners" \
-		--watermark " $CUSTOMER // channels @ $(date) " \
-		-h 200 -w 800 \
-		--rigid \
-		--alt-autoscale-max \
-		--lower-limit 0 \
-		--pango-markup \
-		-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
-		--end now --start end-${DISPLAY_TIME} \
-		--vertical-label "listeners" \
-		$C_DEFLINE \
-		$C_TESTLINE \
-		$C_CDEFLINE \
-		$C_AREALINE \
-		$C_OUTLINE
+		$DEFLINE \
+		$TESTLINE \
+		$CDEFLINE \
+		$AREALINE \
+		$OUTLINE
 	done
 	sleep $LOOP
     done
