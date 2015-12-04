@@ -7,6 +7,7 @@ test -z $LOOP && exit;
 test -z $CUSTOMER && exit;
 
 # COLORS ##############################################################################
+#		       1      2      3      4      5      6      7      8      8      #
 #		       RED    ORANGE YELLOW DGREEN GREEN  BLUE   PINK   VIOLET PURPLE #	
 A_COLOR_DARK=(  000000 CC3118 CC7016 C9B215 8FBC8F 24BC14 1598C3 B415C7 C71585 4D18E4 )
 A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7648EC )
@@ -50,10 +51,10 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--alt-autoscale-max \
 			DEF:bw=$RRDFILE:bw:MAX \
 			DEF:bwlimit=$RRDFILE:bwlimit:MAX \
-			AREA:bw#${A_COLOR_LIGHT[3]}:"Bandwidth load in kbps" \
+			AREA:bw#${A_COLOR_LIGHT[5]}:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
 			GPRINT:bwmax:"%6.0lf kbps MAX" GPRINT:bwavg:"%6.0lf kbps AVG" GPRINT:bwmin:"%6.0lf kbps MIN\\c" \
-			LINE1:bw#${A_COLOR_DARK[3]}: \
+			LINE1:bw#${A_COLOR_DARK[5]}: \
 			LINE1:bwlimit#${A_COLOR_DARK[1]}:
 		done
 	    done
