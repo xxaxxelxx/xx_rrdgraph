@@ -63,7 +63,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 else
     while true; do
 	# create the lines
-	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";AREALINE="";NUM=0
+	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";AREALINE="";OUTLINE="";NUM=0
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    NUM=$(($NUM + 1))
 	    test -r $RRDFILE || continue
@@ -83,7 +83,8 @@ else
 #		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID},+"
 #		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}#${A_COLOR_DARK[$NUM]}:${MOUNT_PRINT}:STACK"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK"
+		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}#${A_COLOR_DARK[$NUM]}::STACK"
 	    else
 		    echo "lining channels..."
 	    fi
@@ -101,7 +102,8 @@ else
 		--end now --start end-${DISPLAY_TIME} \
 		--vertical-label "listeners" \
 		$DEFLINE \
-		$AREALINE
+		$AREALINE \
+		$OUTLINE
 	done
 	sleep $LOOP
     done
