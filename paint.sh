@@ -63,20 +63,30 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 else
     while true; do
 	# create the lines
+	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";AREALINE=""
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    test -r $RRDFILE || continue
 	    RRDFILE_BNAME="$(basename $RRDFILE)"
 	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
-	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
+	    MOUNT_ID_PREV="$MOUNT_ID"
+	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||')"
+	    MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
 	    echo "$MOUNT_ID" | grep '\-ch' > /dev/null
 	    if [ $? -ne 0 ]; then
-		    echo "lining simulcats..."
+		echo "def lining simulcats..."
+		DEFLINE="$DEFLINE DEF:${RRDFILE_BNAME_BODY}=${RRDFILE}:${MOUNT_ID}:MAX"
+#		echo "cdef lining simulcats..."
+#		if [ "x$MOUNT_ID_PREV" == "x" ]; then
+#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}"
+#		else
+#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID},+"
+#		fi
+		echo "area lining simulcats..."
+		AREALINE="$AREALINE AREA:${MOUNT_ID}:${MOUNT_PRINT}:STACK"
 	    else
 		    echo "lining channels..."
 	    fi
-	    
 	done
-	continue
 	# create the graph
 	for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
 	    rrdtool graph /customer/$CUSTOMER/$CUSTOMER.simulcast.${DISPLAY_TIME}.png --slope-mode \
@@ -89,11 +99,8 @@ else
 		-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 		--end now --start end-${DISPLAY_TIME} \
 		--vertical-label "listeners" \
-		DEF:cpuload=$RRDFILE:cpuload:MAX \
-		AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
-		VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
-		GPRINT:cpuloadmax:"%6.0lf%S MAX" GPRINT:cpuloadavg:"%6.0lf%S AVG" GPRINT:cpuloadmin:"%6.0lf%S MIN\\c" \
-		LINE1:cpuload#${A_COLOR_DARK[5]}:
+		$DEFLINE \
+		$AREALINE
 	done
 	sleep $LOOP
     done
