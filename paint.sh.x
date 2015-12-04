@@ -19,7 +19,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 		RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
 		MACHINE_IP="$(echo $RRDFILE_BNAME_BODY | sed 's|_||' | sed 's|\-|\.|g')"
 		for DISPLAY_TIME in $DISPLAY_TIME_LIST; do
-		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.cpuload.${DISPLAY_TIME}.png --slope-mode \
+		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // CPU load" \
 			--watermark " $MACHINE_IP @ $(date) " \
@@ -35,23 +35,6 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
 			GPRINT:cpuloadmax:"%6.0lf%S%% MAX" GPRINT:cpuloadavg:"%6.0lf%S%% AVG" GPRINT:cpuloadmin:"%6.0lf%S%% MIN\\c" \
 			LINE1:cpuload#${A_COLOR_DARK[5]}:
-		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.bwload.${DISPLAY_TIME}.png --slope-mode \
-			--font DEFAULT:7: \
-			--title "$MACHINE_IP // Bandwidth load" \
-			--watermark " $MACHINE_IP @ $(date) " \
-			-h 200 -w 800 \
-			--rigid \
-			--pango-markup \
-			--upper-limit 100 \
-			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
-			--end now --start end-${DISPLAY_TIME} \
-			--vertical-label "CPU load in %" \
-			DEF:bw=$RRDFILE:bw:MAX \
-			DEF:bwlimit=$RRDFILE:bwlimit:MAX \
-			AREA:bw#${A_COLOR_LIGHT[1]}:"Bandwidth load in kbps" \
-			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
-			GPRINT:bwmax:"%6.0lf%S%% MAX" GPRINT:bwavg:"%6.0lf%S%% AVG" GPRINT:bwmin:"%6.0lf%S%% MIN\\c" \
-			LINE1:bwlimit#${A_COLOR_DARK[3]}:
 		done
 	    done
 	sleep $LOOP
