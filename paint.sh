@@ -63,9 +63,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 else
     while true; do
 	# create the lines
-	MOUNT_ID_PREV="";MOUNT_ID=""
-	NUM=0;TNUM=0
-	DEFLINE="";CDEFLINE="";AREALINE="";OUTLINE="";TESTLINE=""
+	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0;TESTLINE="";TNUM=0
 	MAXPRINTLEN=0
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    test -r $RRDFILE || continue
