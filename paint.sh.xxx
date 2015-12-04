@@ -64,16 +64,6 @@ else
     while true; do
 	# create the lines
 	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0;TESTLINE=""
-	MAXPRINTLEN=0
-	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
-	    test -r $RRDFILE || continue
-	    RRDFILE_BNAME="$(basename $RRDFILE)"
-	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
-	    MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
-	    if [ ${#MOUNT_PRINT} -gt $MAXPRINTLEN ]; then
-		MAXPRINTLEN=${#MOUNT_PRINT}
-	    fi
-	done
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    NUM=$(($NUM + 1))
 	    test -r $RRDFILE || continue
@@ -82,9 +72,6 @@ else
 	    MOUNT_ID_PREV="$MOUNT_ID"
 	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||')"
 	    MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
-	    PADDEDSPACELEN=$(($MAXPRINTLEN - ${#MOUNT_PRINT}))
-	    PADDEDSPACE="$(printf "%0.s-" {1..$PADDEDSPACELEN})"
-	    
 	    echo "$MOUNT_ID" | grep '\-ch' > /dev/null
 	    if [ $? -ne 0 ]; then
 		echo "def lining simulcats..."
@@ -96,7 +83,7 @@ else
 		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
 		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM GPRINT:${MOUNT_ID}max:MAX\:&#32;%6.0lf&#32;%s\\c"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM GPRINT:${MOUNT_ID}max:MAX\:&#32;%6.0lf&#32;%s\\c"
 		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 	    else
 		    echo "lining channels..."
