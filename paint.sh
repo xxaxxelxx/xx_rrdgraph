@@ -83,8 +83,7 @@ else
 	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||')"
 	    MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
 	    PADDEDSPACELEN=$(($MAXPRINTLEN - ${#MOUNT_PRINT}))
-	    PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n 'x'; done)"
-	    echo "XXX${PADDEDSPACE}XXX"
+	    PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n '\ '; done)"
 	    
 	    echo "$MOUNT_ID" | grep '\-ch' > /dev/null
 	    if [ $? -ne 0 ]; then
@@ -97,7 +96,7 @@ else
 		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
 		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM GPRINT:${MOUNT_ID}max:MAX\:&#32;%6.0lf&#32;%s\\c"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
 		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 	    else
 		    echo "lining channels..."
