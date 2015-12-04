@@ -2,7 +2,7 @@
 LOOP=$1
 CUSTOMER=$2
 LOOP=300
-CUSTOMER=admin
+CUSTOMER=bbradio
 test -z $LOOP && exit;
 test -z $CUSTOMER && exit;
 
@@ -62,6 +62,14 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
     done
 else
     while true; do
+	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
+	    test -r $RRDFILE || continue
+	    RRDFILE_BNAME="$(basename $RRDFILE)"
+	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
+	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
+	    echo "$MOUNT_ID"
+	    
+	done
 	sleep $LOOP
     done
 fi
