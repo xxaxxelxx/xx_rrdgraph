@@ -62,13 +62,37 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
     done
 else
     while true; do
+	# create the lines
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    test -r $RRDFILE || continue
 	    RRDFILE_BNAME="$(basename $RRDFILE)"
 	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
 	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
-	    echo "$MOUNT_ID"
+	    echo "$MOUNT_ID" | grep '-ch' > /dev/null
+	    if [ $? -ne 0 ]; then		
+		    echo "lining simulcats..."
+	    else
+		    echo "lining channels..."
+	    fi
 	    
+	done
+	# create the graph
+	for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
+	    rrdtool graph /customer/$CUSTOMER/$CUSTOMER.simulcast.${DISPLAY_TIME}.png --slope-mode \
+		--font DEFAULT:7: \
+		--title "$CUSTOMER // Simulcast listeners" \
+		--watermark " $CUSTOMER // simulcast @ $(date) " \
+		-h 200 -w 800 \
+		--rigid \
+		--pango-markup \
+		-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
+		--end now --start end-${DISPLAY_TIME} \
+		--vertical-label "listeners" \
+		DEF:cpuload=$RRDFILE:cpuload:MAX \
+		AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
+		VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
+		GPRINT:cpuloadmax:"%6.0lf%S MAX" GPRINT:cpuloadavg:"%6.0lf%S AVG" GPRINT:cpuloadmin:"%6.0lf%S MIN\\c" \
+		LINE1:cpuload#${A_COLOR_DARK[5]}:
 	done
 	sleep $LOOP
     done
