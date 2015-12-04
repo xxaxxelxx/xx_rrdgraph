@@ -81,10 +81,11 @@ else
 #		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}"
 #		else
 #		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID},+"
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID},$NUM,+"
 #		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK"
-		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}#${A_COLOR_DARK[$NUM]}::STACK"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}show#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK"
+		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}::STACK"
 	    else
 		    echo "lining channels..."
 	    fi
