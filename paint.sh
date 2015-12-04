@@ -69,13 +69,14 @@ else
 	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
 	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
 	    echo "$MOUNT_ID" | grep '-ch' > /dev/null
-	    if [ $? -ne 0 ]; then		
+	    if [ $? -ne 0 ]; then
 		    echo "lining simulcats..."
 	    else
 		    echo "lining channels..."
 	    fi
 	    
 	done
+	continue
 	# create the graph
 	for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
 	    rrdtool graph /customer/$CUSTOMER/$CUSTOMER.simulcast.${DISPLAY_TIME}.png --slope-mode \
