@@ -85,7 +85,7 @@ else
 ##		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test,$NUM,+"
 #		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM GPRINT:${MOUNT_ID}max:%6.0lf&#32;%s\\c"
 		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}test#${A_COLOR_DARK[$NUM]}::STACK"
 	    else
 		    echo "lining channels..."
@@ -105,8 +105,8 @@ else
 		--vertical-label "listeners" \
 		$DEFLINE \
 		$TESTLINE \
-		$AREALINE \
-		$OUTLINE
+		$AREALINE
+#		$OUTLINE
 	done
 	sleep $LOOP
     done
