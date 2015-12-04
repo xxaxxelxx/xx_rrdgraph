@@ -78,15 +78,14 @@ else
 		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
 #		echo "cdef lining simulcats..."
 		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$NUM,+"
-#		if [ "x$MOUNT_ID_PREV" == "x" ]; then
-#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
-#		else
-#		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
-##		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test,$NUM,+"
-#		fi
+		if [ "x$MOUNT_ID_PREV" == "x" ]; then
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
+		else
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
+		fi
 		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT} VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM GPRINT:${MOUNT_ID}max:%6.0lf&#32;%s\\c"
-		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}test#${A_COLOR_DARK[$NUM]}::STACK"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM GPRINT:${MOUNT_ID}max:%6.0lf&#32;%s\\c"
+		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 	    else
 		    echo "lining channels..."
 	    fi
@@ -99,14 +98,16 @@ else
 		--watermark " $CUSTOMER // simulcast @ $(date) " \
 		-h 200 -w 800 \
 		--rigid \
+		--alt-autoscale-max \
+		--lower-limit 0 \
 		--pango-markup \
 		-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 		--end now --start end-${DISPLAY_TIME} \
 		--vertical-label "listeners" \
 		$DEFLINE \
 		$TESTLINE \
-		$AREALINE
-#		$OUTLINE
+		$AREALINE \
+		$OUTLINE
 	done
 	sleep $LOOP
     done
