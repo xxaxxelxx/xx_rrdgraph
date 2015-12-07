@@ -24,7 +24,7 @@ COPY html.* /
 COPY *.css /
 
 ENV LOOP=300
-ENV GROUPMARKER="-ch"
+ENV GROUPMARKER="ch"
 
 COPY entrypoint.sh /entrypoint.sh
 

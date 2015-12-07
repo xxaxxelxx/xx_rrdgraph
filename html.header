@@ -4,5 +4,5 @@
     </header>
     <body>
 	Welcome <blink><CUSTOMER></blink>!<p>
-	<TIMEMODELINE><p>
+	Select your observation period: <TIMEMODELINE><p>
 	Your current status is:<p><hr>

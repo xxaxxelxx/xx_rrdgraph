@@ -4,8 +4,8 @@ CUSTOMER=$2
 OIFS=$IFS; IFS=$'|'; A_GROUPMARKERS=($(echo "$3")); IFS=$OIFS
 A_GROUPMARKERS+=('_')
 
-LOOP=300
-CUSTOMER=bbradio
+#LOOP=300
+#CUSTOMER=bbradio
 test -z $LOOP && exit;
 test -z $CUSTOMER && exit;
 
@@ -52,7 +52,6 @@ done
 
 }
 
-
 if [ "x$CUSTOMER" == "xadmin" ]; then
     while true; do
 	    for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
@@ -76,7 +75,8 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			AREA:cpuload#${A_COLOR_LIGHT[1]}:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
 			GPRINT:cpuloadmax:"%6.0lf%S%% MAX" GPRINT:cpuloadavg:"%6.0lf%S%% AVG" GPRINT:cpuloadmin:"%6.0lf%S%% MIN\\c" \
-			LINE1:cpuload#${A_COLOR_DARK[5]}:
+			LINE1:cpuload#${A_COLOR_DARK[5]}: > dev/null 2>&1
+
 		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.bwload.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // Bandwidth load" \
@@ -94,9 +94,10 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
 			GPRINT:bwmax:"%6.0lf kbps MAX" GPRINT:bwavg:"%6.0lf kbps AVG" GPRINT:bwmin:"%6.0lf kbps MIN\\c" \
 			LINE1:bw#${A_COLOR_DARK[5]}: \
-			LINE1:bwlimit#${A_COLOR_DARK[1]}:
+			LINE1:bwlimit#${A_COLOR_DARK[1]}:  > dev/null 2>&1
 		done
 	    done
+	indexer $CUSTOMER
 	sleep $LOOP
     done
 else
@@ -130,22 +131,16 @@ else
 		MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
 		PADDEDSPACELEN=$(($MAXPRINTLEN - ${#MOUNT_PRINT}))
 		PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n '&#32;'; done)"
-		echo "$MOUNT_ID" | grep '\-ch' > /dev/null
-		if [ $? -ne 0 ]; then
-		    echo "def lining simulcats..."
-		    DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
-		    TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
-		    if [ "x$MOUNT_ID_PREV" == "x" ]; then
-			CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
-		    else
-			CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
-		    fi
-		    echo "area lining simulcats..."
-		    AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
-		    OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
+
+		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
+		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
+		if [ "x$MOUNT_ID_PREV" == "x" ]; then
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
 		else
-		    echo "lining channels..."
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
 		fi
+		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
+		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 	    done
 	    # create the graph
 	    for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
@@ -169,7 +164,7 @@ else
 		    $AREALINE \
 		    $OUTLINE \
 		    COMMENT:"  ${TOTALSTRING}${TOTALSPACE}" \
-		    VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c"
+		    VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c"  > dev/null 2>&1
 	    done
 	done
 	indexer $CUSTOMER
