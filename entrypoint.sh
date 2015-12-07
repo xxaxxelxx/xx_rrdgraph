@@ -5,7 +5,7 @@ CUSTOMER=$1
 #LINKED_CONTAINER=$(env | grep '_ENV_' | head -n 1 | awk '{print $1}' | sed 's/_ENV_.*//')
 #LB_HOST="$(cat /etc/hosts | grep -iw ${LINKED_CONTAINER} | awk '{print $1}')"
 
-cp -f main.css /customer/$CUSTOMER/
+cp -f /main.css /customer/$CUSTOMER/
 
 #./paint.sh $LOOP $CUSTOMER $GROUPMARKER
 
