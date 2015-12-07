@@ -17,32 +17,25 @@ A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7
 #######################################################################################
 PANGO_SPACE='&#32;'
 DISPLAY_TIME_LIST="1d 1w 5w 1y"
-INDEXTIMEMODE="1d"
 TOTALSTRING="Total"
 
 function indexer() {
 CUSTOMER=$1
-for TIMEMODE in $DISPLAY_TIME_LIST; do
-    BODY=""
-    HEADER=$(cat html.header | \
-	sed "s|<CUSTOMER>|$CUSTOMER|g" \
-	sed "s|<TIMEMODELINE>|$(for TMODE in $DISPLAY_TIME_LIST; do echo "<a href=$TMODE.html>$TMODE</a>";done)|g" \
-	)
-    FOOTER=$(cat html.footer | \
-	sed "s|<DATE>|$(date)|g" | \
-	sed "s|<COPYRIGHT>|MIT License|g" \
-	)
-    for PNGFILE in /customer/$CUSTOMER/*.$TIMEMODE.png; do
-	BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"
-    done
-
-    echo "$HEADER" > /customer/$CUSTOMER/$TIMEMODE.html
-    echo "$BODY" >> /customer/$CUSTOMER/$TIMEMODE.html
-    echo "$FOOTER" >> /customer/$CUSTOMER/$TIMEMODE.html
-    if [ "x$TIMEMODE" == "x$INDEXTIMEMODE" ]; then
-	cp -f $TIMEMODE.html index.html
-    fi
+BODY=""
+HEADER=$(cat html.header | \
+    sed "s|<CUSTOMER>|$CUSTOMER|g" \
+    )
+FOOTER=$(cat html.footer | \
+    sed "s|<DATE>|$(date)|g" | \
+    sed "s|<COPYRIGHT>|MIT License|g" \
+    )
+for PNGFILE in /customer/$CUSTOMER/*.png; do
+    BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"
 done
+
+echo "$HEADER" > /customer/$CUSTOMER/index.html
+echo "$BODY" >> /customer/$CUSTOMER/index.html
+echo "$FOOTER" >> /customer/$CUSTOMER/index.html
 
 }
 

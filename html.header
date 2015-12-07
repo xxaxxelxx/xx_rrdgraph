@@ -3,4 +3,5 @@
     </header>
     <body>
 	Welcome <blink><CUSTOMER></blink>!<p>
+	<TIMEMODELINE><p>
 	Your current status is:<p><hr>
