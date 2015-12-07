@@ -26,7 +26,7 @@ HEADER="$(cat html.header | \
     sed 's|<CUSTOMER>|$CUSTOMER|g' \
     )"
 FOOTER="$(cat html.footer | \
-    sed 's|<DATE>|$(date)|g' \
+    sed 's|<DATE>|$(date)|g' | \
     sed 's|<COPYRIGHT>|MIT License|g' \
     )"
 for PNGFILES in /customer/$CUSTOMER/*.png; do
