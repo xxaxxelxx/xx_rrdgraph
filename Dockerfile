@@ -20,7 +20,10 @@ RUN apt-get clean
 COPY *.sh /
 RUN chmod 700 /*.sh
 
+COPY html.* /
+
 ENV LOOP=300
+ENV GROUPMARKER="-ch"
 
 COPY entrypoint.sh /entrypoint.sh
 
