@@ -33,9 +33,9 @@ for PNGFILES in /customer/$CUSTOMER/*.png; do
     BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"
 done
 
-echo "$HEADER" > index.html
-echo "$BODY" >> index.html
-echo "$FOOTER" >> index.html
+echo "$HEADER" > /customer/$CUSTOMER/index.html
+echo "$BODY" >> /customer/$CUSTOMER/index.html
+echo "$FOOTER" >> /customer/$CUSTOMER/index.html
 
 }
 
