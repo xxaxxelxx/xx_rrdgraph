@@ -133,7 +133,7 @@ else
 		    $CDEFLINE \
 		    $AREALINE \
 		    $OUTLINE \
-		    COMMENT:"${TOTALSTRING}${TOTALSPACE}" \
+		    COMMENT:"  ${TOTALSTRING}${TOTALSPACE}" \
 		    VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c"
 	    done
 	done
