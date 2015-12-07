@@ -2,7 +2,7 @@
 LOOP=$1
 CUSTOMER=$2
 OIFS=$IFS; IFS=$'|'; A_GROUPMARKERS=($(echo "$3")); IFS=$OIFS
-A_GROUPMARKERS+=('.')
+A_GROUPMARKERS+=('_')
 
 LOOP=300
 CUSTOMER=bbradio
@@ -81,7 +81,7 @@ else
 	for GROUPMARKER in ${A_GROUPMARKERS[@]}; do
 	    DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0
 	    TESTLINE="";TNUM=0
-	    for RRDFILE in /customer/$CUSTOMER/_*${GROUPMARKER}*rrd; do
+	    for RRDFILE in /customer/$CUSTOMER/*${GROUPMARKER}*.rrd; do
 		test -r $RRDFILE || continue
 		NUM=$(($NUM + 1))
 		TNUM=$(($TNUM + 21))
@@ -113,7 +113,7 @@ else
 	    done
 	    # create the graph
 	    for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
-		rrdtool graph /customer/$CUSTOMER/$CUSTOMER.simulcast.${DISPLAY_TIME}.png --slope-mode \
+		rrdtool graph /customer/$CUSTOMER/$CUSTOMER.$GROUPMARKER.${DISPLAY_TIME}.png --slope-mode \
 		    --font DEFAULT:7: \
 		    --title "$CUSTOMER // Simulcast listeners" \
 		    --watermark " $CUSTOMER // simulcast @ $(date) " \
