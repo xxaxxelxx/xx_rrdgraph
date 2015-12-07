@@ -32,7 +32,7 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
 	)
     FOOTER=$(cat html.footer | \
 	sed "s|<DATE>|$(date)|g" | \
-	sed "s|<COPYRIGHT>|MIT License|g" \
+	sed "s|<COPYRIGHT>|<a href=https://opensource.org/licenses/MIT>MIT License</a>|g" \
 	)
     for PNGFILE in /customer/$CUSTOMER/*.$TIMEMODE.png; do
 	BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"

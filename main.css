@@ -1,7 +1,7 @@
 a, body, i, td, dt, dd, input, textarea {
   font-familyx: verdana,arial,helvetica,sans-serif;
   font-family: verdana,arial,helvetica,sans-serif;
-  font-size: 10px;
+  font-size: 16px;
   text-decoration: none;
   background-color: #000;
   text-transform: uppercase;
@@ -12,7 +12,7 @@ body, i, td, dd, input, textarea, dt {
 }
 
 a {
-  color: #ffffff;
+  color: purple;
 }
 
 .normal {
