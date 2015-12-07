@@ -29,7 +29,7 @@ FOOTER="$(cat html.footer | \
     sed 's|<DATE>|$(date)|g' | \
     sed 's|<COPYRIGHT>|MIT License|g' \
     )"
-for PNGFILES in /customer/$CUSTOMER/*.png; do
+for PNGFILE in /customer/$CUSTOMER/*.png; do
     BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"
 done
 
