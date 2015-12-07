@@ -22,7 +22,7 @@ TOTALSTRING="Total"
 
 function indexer() {
 CUSTOMER=$1
-TIMEMODELINE="$( for TMODE in $DISPLAY_TIME_LIST; do echo -n "<a href=$TMODE.html>$TMODE</a>&nbsp;"; done)"
+TIMEMODELINE="$( for TMODE in $DISPLAY_TIME_LIST; do echo -n "<a href=$TMODE.html>$TMODE</a>\&nbsp;"; done)"
 
 for TIMEMODE in $DISPLAY_TIME_LIST; do
     BODY=""
