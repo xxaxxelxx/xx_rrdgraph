@@ -17,6 +17,7 @@ A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7
 #######################################################################################
 PANGO_SPACE='&#32;'
 DISPLAY_TIME_LIST="1d 1w 5w 1y"
+TOTALSTRING="Total"
 if [ "x$CUSTOMER" == "xadmin" ]; then
     while true; do
 	    for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
@@ -113,6 +114,8 @@ else
 	    done
 	    # create the graph
 	    for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
+		TOTALSPACELEN=$(($MAXPRINTLEN - ${#TOTALSTRING}))
+		TOTALSPACE="$(for a in `seq $TOTALSPACELEN`; do echo -n '&#32;'; done)"
 		rrdtool graph /customer/$CUSTOMER/$CUSTOMER.$GROUPMARKER.${DISPLAY_TIME}.png --slope-mode \
 		    --font DEFAULT:7: \
 		    --title "$CUSTOMER // Simulcast listeners" \
@@ -129,7 +132,9 @@ else
 		    $TESTLINE \
 		    $CDEFLINE \
 		    $AREALINE \
-		    $OUTLINE VDEF:allmax=${MOUNT_ID}show,MAXIMUM GPRINT:allmax:MAX\:%6.0lf
+		    $OUTLINE \
+		    COMMENT:"${TOTALSTRING}${TOTALSPACE}"
+		    VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c"
 	    done
 	done
 	sleep $LOOP
