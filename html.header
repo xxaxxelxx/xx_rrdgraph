@@ -1,2 +1,6 @@
-Welcome <blink><CUSTOMER></blink>!<p>
-Your current status is:<p><hr>
+<html>
+    <header>
+    </header>
+    <body>
+	Welcome <blink><CUSTOMER></blink>!<p>
+	Your current status is:<p><hr>

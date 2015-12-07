@@ -22,13 +22,13 @@ TOTALSTRING="Total"
 function indexer() {
 CUSTOMER=$1
 BODY=""
-HEADER="$(cat html.header | \
-    sed 's|<CUSTOMER>|$CUSTOMER|g' \
-    )"
-FOOTER="$(cat html.footer | \
-    sed 's|<DATE>|$(date)|g' | \
-    sed 's|<COPYRIGHT>|MIT License|g' \
-    )"
+HEADER=$(cat html.header | \
+    sed "s|<CUSTOMER>|$CUSTOMER|g" \
+    )
+FOOTER=$(cat html.footer | \
+    sed "s|<DATE>|$(date)|g" | \
+    sed "s|<COPYRIGHT>|MIT License|g" \
+    )
 for PNGFILE in /customer/$CUSTOMER/*.png; do
     BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"
 done
