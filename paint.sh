@@ -34,9 +34,21 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
 	sed "s|<DATE>|$(date)|g" | \
 	sed "s|<COPYRIGHT>|<a href=https://opensource.org/licenses/MIT>MIT License</a>|g" \
 	)
-    for PNGFILE in /customer/$CUSTOMER/*.$TIMEMODE.png; do
-	BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"
-    done
+    if [ "x$CUSTOMER" == "xadmin" ]; then
+	for PNGFILE in /customer/$CUSTOMER/*.$TIMEMODE.png; do
+	    MACHINE_ID_OLD="$MACHINE_ID"
+	    MACHINE_ID="$(PNGFILE%%\.*)"
+	    if [ "x$MACHINE_ID" == "x$MACHINE_ID_OLD" ]; then
+		BODY="$BODY <img src=\"$(basename $PNGFILE)\">"
+	    else
+		BODY="<p><img src=\"$(basename $PNGFILE)\">"
+	    fi
+	done	    
+    else
+	for PNGFILE in /customer/$CUSTOMER/*.$TIMEMODE.png; do
+	    BODY="$BODY<p><img src=\"$(basename $PNGFILE)\">"
+	done
+    fi
 
     echo "$HEADER" > /customer/$CUSTOMER/$TIMEMODE.html
     echo "$BODY" >> /customer/$CUSTOMER/$TIMEMODE.html
