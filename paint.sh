@@ -44,6 +44,10 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
     if [ "x$TIMEMODE" == "x$INDEXTIMEMODE" ]; then
 	cp -f /customer/$CUSTOMER/$TIMEMODE.html /customer/$CUSTOMER/index.html
     fi
+    test -r main.css && \
+    cp -f main.css /customer/$CUSTOMER/
+    test -r $CUSTOMER.css && \
+    cp -f $CUSTOMER.css /customer/$CUSTOMER/
 done
 
 }
