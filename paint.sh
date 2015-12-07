@@ -22,11 +22,18 @@ TOTALSTRING="Total"
 
 function indexer() {
 CUSTOMER=$1
+	TIMEMODELINE=$( \
+	    for TMODE in $DISPLAY_TIME_LIST; do 
+		echo "<a href=$TMODE.html>$TMODE</a>"
+	    done
+	    )
+
+
 for TIMEMODE in $DISPLAY_TIME_LIST; do
     BODY=""
     HEADER=$(cat html.header | \
-	sed "s|<CUSTOMER>|$CUSTOMER|g" \
-	sed "s|<TIMEMODELINE>|$(for TMODE in $DISPLAY_TIME_LIST; do echo "<a href=$TMODE.html>$TMODE</a>";done)|g" \
+	sed "s|<CUSTOMER>|$CUSTOMER|g" | \
+	sed "s|<TIMEMODELINE>|$TIMEMODELINE|g" \
 	)
     FOOTER=$(cat html.footer | \
 	sed "s|<DATE>|$(date)|g" | \
@@ -40,7 +47,7 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
     echo "$BODY" >> /customer/$CUSTOMER/$TIMEMODE.html
     echo "$FOOTER" >> /customer/$CUSTOMER/$TIMEMODE.html
     if [ "x$TIMEMODE" == "x$INDEXTIMEMODE" ]; then
-	cp -f $TIMEMODE.html index.html
+	cp -f /customer/$CUSTOMER/$TIMEMODE.html /customer/$CUSTOMER/index.html
     fi
 done
 
