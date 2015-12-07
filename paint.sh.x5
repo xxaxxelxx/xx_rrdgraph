@@ -129,7 +129,7 @@ else
 		    $TESTLINE \
 		    $CDEFLINE \
 		    $AREALINE \
-		    $OUTLINE VDEF:allmax=${MOUNT_ID}show,MAXIMUM GPRINT:allmax:MAX\:%6.0lf
+		    $OUTLINE
 	    done
 	done
 	sleep $LOOP
