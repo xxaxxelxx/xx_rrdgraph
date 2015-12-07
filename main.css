@@ -1,0 +1,29 @@
+a, body, i, td, dt, dd, input, textarea {
+  font-familyx: verdana,arial,helvetica,sans-serif;
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: 10px;
+  text-decoration: none;
+  background-color: #00000;
+  text-transform: uppercase;
+}
+
+body, i, td, dd, input, textarea, dt {
+  color: #cc0033;
+}
+
+a {
+  color: #ffffff;
+}
+
+.normal {
+  text-transform: uppercase;
+}
+
+.grey {
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: 10px;
+  text-decoration: none;
+  background-color: #999999;
+  text-transform: uppercase;
+  color: #cccccc;
+}
