@@ -1,6 +1,9 @@
 #!/bin/bash
 LOOP=$1
 CUSTOMER=$2
+OIFS=$IFS; IFS=$'|'; A_GROUPMARKERS=($(echo "$3")); IFS=$OIFS
+A_GROUPMARKERS+=('.')
+
 LOOP=300
 CUSTOMER=bbradio
 test -z $LOOP && exit;
@@ -62,8 +65,8 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
     done
 else
     while true; do
-	# create the lines
-	DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0;TESTLINE="";TNUM=0
+	LIST_PROCESSED=""
+	GROUPMARKER=""
 	MAXPRINTLEN=0
 	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
 	    test -r $RRDFILE || continue
@@ -74,54 +77,60 @@ else
 		MAXPRINTLEN=${#MOUNT_PRINT}
 	    fi
 	done
-	for RRDFILE in /customer/$CUSTOMER/_*.rrd; do
-	    NUM=$(($NUM + 1))
-	    TNUM=$(($TNUM + 21))
-	    test -r $RRDFILE || continue
-	    RRDFILE_BNAME="$(basename $RRDFILE)"
-	    RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
-	    MOUNT_ID_PREV="$MOUNT_ID"
-	    MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||')"
-	    MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
-	    PADDEDSPACELEN=$(($MAXPRINTLEN - ${#MOUNT_PRINT}))
-	    PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n '&#32;'; done)"
-	    
-	    echo "$MOUNT_ID" | grep '\-ch' > /dev/null
-	    if [ $? -ne 0 ]; then
-		echo "def lining simulcats..."
-		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
-		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
-		if [ "x$MOUNT_ID_PREV" == "x" ]; then
-		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
+	# create the lines
+	for GROUPMARKER in ${A_GROUPMARKERS[@]}; do
+	    DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0
+	    TESTLINE="";TNUM=0
+	    for RRDFILE in /customer/$CUSTOMER/_*${GROUPMARKER}*rrd; do
+		test -r $RRDFILE || continue
+		NUM=$(($NUM + 1))
+		TNUM=$(($TNUM + 21))
+		RRDFILE_BNAME="$(basename $RRDFILE)"
+		echo "$LIST_PROCESSED" | grep -w "$RRDFILE_BNAME" > /dev/null && continue
+		LIST_PROCESSED="$LIST_PROCESSED $RRDFILE_BNAME"
+		RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
+		MOUNT_ID_PREV="$MOUNT_ID"
+		MOUNT_ID="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||')"
+		MOUNT_PRINT="$(echo $RRDFILE_BNAME_BODY | sed 's|^_||' | sed 's|\_|\.|g')"
+		PADDEDSPACELEN=$(($MAXPRINTLEN - ${#MOUNT_PRINT}))
+		PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n '&#32;'; done)"
+		echo "$MOUNT_ID" | grep '\-ch' > /dev/null
+		if [ $? -ne 0 ]; then
+		    echo "def lining simulcats..."
+		    DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
+		    TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
+		    if [ "x$MOUNT_ID_PREV" == "x" ]; then
+			CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
+		    else
+			CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
+		    fi
+		    echo "area lining simulcats..."
+		    AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
+		    OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 		else
-		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
-		fi
-		echo "area lining simulcats..."
-		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
-		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
-	    else
 		    echo "lining channels..."
-	    fi
-	done
-	# create the graph
-	for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
-	    rrdtool graph /customer/$CUSTOMER/$CUSTOMER.simulcast.${DISPLAY_TIME}.png --slope-mode \
-		--font DEFAULT:7: \
-		--title "$CUSTOMER // Simulcast listeners" \
-		--watermark " $CUSTOMER // simulcast @ $(date) " \
-		-h 200 -w 800 \
-		--rigid \
-		--alt-autoscale-max \
-		--lower-limit 0 \
-		--pango-markup \
-		-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
-		--end now --start end-${DISPLAY_TIME} \
-		--vertical-label "listeners" \
-		$DEFLINE \
-		$TESTLINE \
-		$CDEFLINE \
-		$AREALINE \
-		$OUTLINE
+		fi
+	    done
+	    # create the graph
+	    for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
+		rrdtool graph /customer/$CUSTOMER/$CUSTOMER.simulcast.${DISPLAY_TIME}.png --slope-mode \
+		    --font DEFAULT:7: \
+		    --title "$CUSTOMER // Simulcast listeners" \
+		    --watermark " $CUSTOMER // simulcast @ $(date) " \
+		    -h 200 -w 800 \
+		    --rigid \
+		    --alt-autoscale-max \
+		    --lower-limit 0 \
+		    --pango-markup \
+		    -c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
+		    --end now --start end-${DISPLAY_TIME} \
+		    --vertical-label "listeners" \
+		    $DEFLINE \
+		    $TESTLINE \
+		    $CDEFLINE \
+		    $AREALINE \
+		    $OUTLINE
+	    done
 	done
 	sleep $LOOP
     done
