@@ -90,7 +90,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			AREA:cpuload#DC143C:"cpu load in %" \
 			VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
 			GPRINT:cpuloadmax:"%6.0lf%S%% MAX" GPRINT:cpuloadavg:"%6.0lf%S%% AVG" GPRINT:cpuloadmin:"%6.0lf%S%% MIN\\c" \
-			LINE1:cpuload#DC143C: > dev/null 2>&1
+			LINE1:cpuload#0000FF: > dev/null 2>&1
 
 		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.bwload.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
@@ -109,7 +109,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			AREA:bw#00FF00:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
 			GPRINT:bwmax:"%6.0lf kbps MAX" GPRINT:bwavg:"%6.0lf kbps AVG" GPRINT:bwmin:"%6.0lf kbps MIN\\c" \
-			LINE1:bw#DC143C: \
+			LINE1:bw#0000FF: \
 			LINE1:bwlimit#DC143C:  > dev/null 2>&1
 		done
 	    done
