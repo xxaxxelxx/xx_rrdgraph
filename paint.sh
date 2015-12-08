@@ -109,7 +109,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			AREA:bw#00FF00:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
 			GPRINT:bwmax:"%6.0lf kbps MAX" GPRINT:bwavg:"%6.0lf kbps AVG" GPRINT:bwmin:"%6.0lf kbps MIN\\c" \
-			LINE1:bw#0000CD: \
+			LINE1:bw#DC143C: \
 			LINE1:bwlimit#DC143C:  > dev/null 2>&1
 		done
 	    done
