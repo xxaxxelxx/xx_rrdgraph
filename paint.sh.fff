@@ -12,10 +12,8 @@ test -z $CUSTOMER && exit;
 # COLORS ##############################################################################
 #		       1      2      3      4      5      6      7      8      8      #
 #		       RED    ORANGE YELLOW DGREEN GREEN  BLUE   PINK   VIOLET PURPLE #	
-#A_COLOR_DARK=(  000000 CC3118 CC7016 C9B215 8FBC8F 24BC14 1598C3 B415C7 C71585 4D18E4 )
-#A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7648EC )
-A_COLOR_DARK=( 000000 FFFF00 FFD700 FFA500 FF8C00 FF7F50 FF4500 FF0000 DC143C FF69B4 FF1493 FF00FF DA70D6 9370DB 663399 00BFFF 1E90FF 0000FF 00008B 7FFF00 00FF00 228B22 6B8E23 )
-A_COLOR_LIGHT=( 000000 FFFF00 FFD700 FFA500 FF8C00 FF7F50 FF4500 FF0000 DC143C FF69B4 FF1493 FF00FF DA70D6 9370DB 663399 00BFFF 1E90FF 0000FF 00008B 7FFF00 00FF00 228B22 6B8E23 )
+A_COLOR_DARK=(  000000 CC3118 CC7016 C9B215 8FBC8F 24BC14 1598C3 B415C7 C71585 4D18E4 )
+A_COLOR_LIGHT=( 000000 EA644A EC9D48 ECD748 3CB371 54EC48 48C4EC DE48EC FF1493 7648EC )
 #######################################################################################
 PANGO_SPACE='&#32;'
 DISPLAY_TIME_LIST="1d 1w 5w 1y"
@@ -82,7 +80,6 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--rigid \
 			--pango-markup \
 			--upper-limit 100 \
-			--lower-limit 0 \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "CPU load in %" \
@@ -97,7 +94,6 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--title "$MACHINE_IP // Bandwidth load" \
 			--watermark " $MACHINE_IP @ $(date) " \
 			-h 200 -w 800 \
-			--lower-limit 0 \
 			--rigid \
 			--pango-markup \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
@@ -136,10 +132,10 @@ else
 #TEST	    TESTLINE="";TNUM=0
 	    for RRDFILE in /customer/$CUSTOMER/*${GROUPMARKER}*.rrd; do
 		test -r $RRDFILE || continue
-		RRDFILE_BNAME="$(basename $RRDFILE)"
-		echo "$LIST_PROCESSED" | grep -w "$RRDFILE_BNAME" > /dev/null && continue
 		NUM=$(($NUM + 1))
 #TEST		TNUM=$(($TNUM + 21))
+		RRDFILE_BNAME="$(basename $RRDFILE)"
+		echo "$LIST_PROCESSED" | grep -w "$RRDFILE_BNAME" > /dev/null && continue
 		LIST_PROCESSED="$LIST_PROCESSED $RRDFILE_BNAME"
 		RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
 		MOUNT_ID_PREV="$MOUNT_ID"
@@ -159,8 +155,7 @@ else
 		fi
 #TEST		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
 		AREALINE="$AREALINE AREA:${MOUNT_ID}#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID},MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID},MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID},AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
-		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#000000:"
-#		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
+		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 	    done
 	    # create the graph
 	    for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
