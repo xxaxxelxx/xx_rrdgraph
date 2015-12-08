@@ -168,9 +168,9 @@ else
 		TOTALSPACE="$(for a in `seq $TOTALSPACELEN`; do echo -n '&#32;'; done)"
 		rrdtool graph /customer/$CUSTOMER/$CUSTOMER.$GROUPMARKER.${DISPLAY_TIME}.png --slope-mode \
 		    --font DEFAULT:7: \
-		    --title "$CUSTOMER // Simulcast listeners" \
+		    --title "$CUSTOMER // Listeners" \
 		    --watermark " $CUSTOMER // simulcast @ $(date) " \
-		    -h 200 -w 800 \
+		    -h 400 -w 800 \
 		    --rigid \
 		    --alt-autoscale-max \
 		    --lower-limit 0 \
