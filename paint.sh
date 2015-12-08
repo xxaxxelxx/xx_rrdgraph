@@ -129,11 +129,11 @@ else
 	# create the lines
 	for GROUPMARKER in ${A_GROUPMARKERS[@]}; do
 	    DEFLINE="";CDEFLINE="";MOUNT_ID_PREV="";MOUNT_ID="";AREALINE="";OUTLINE="";NUM=0
-	    TESTLINE="";TNUM=0
+#TEST	    TESTLINE="";TNUM=0
 	    for RRDFILE in /customer/$CUSTOMER/*${GROUPMARKER}*.rrd; do
 		test -r $RRDFILE || continue
 		NUM=$(($NUM + 1))
-		TNUM=$(($TNUM + 21))
+#TEST		TNUM=$(($TNUM + 21))
 		RRDFILE_BNAME="$(basename $RRDFILE)"
 		echo "$LIST_PROCESSED" | grep -w "$RRDFILE_BNAME" > /dev/null && continue
 		LIST_PROCESSED="$LIST_PROCESSED $RRDFILE_BNAME"
@@ -145,13 +145,16 @@ else
 		PADDEDSPACE="$(for a in `seq $PADDEDSPACELEN`; do echo -n '&#32;'; done)"
 
 		DEFLINE="$DEFLINE DEF:${MOUNT_ID}=${RRDFILE}:${MOUNT_ID}:MAX"
-		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
+#TEST		TESTLINE="$TESTLINE CDEF:${MOUNT_ID}test=${MOUNT_ID},$TNUM,+"
 		if [ "x$MOUNT_ID_PREV" == "x" ]; then
-		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
+#TEST		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}test"
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID}"
 		else
-		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
+#TEST		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID}test,+"
+		    CDEFLINE="$CDEFLINE CDEF:${MOUNT_ID}show=${MOUNT_ID_PREV}show,${MOUNT_ID},+"
 		fi
-		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
+#TEST		AREALINE="$AREALINE AREA:${MOUNT_ID}test#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID}test,MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID}test,MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID}test,AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
+		AREALINE="$AREALINE AREA:${MOUNT_ID}#${A_COLOR_LIGHT[$NUM]}:${MOUNT_PRINT}${PADDEDSPACE}:STACK VDEF:${MOUNT_ID}max=${MOUNT_ID},MAXIMUM VDEF:${MOUNT_ID}min=${MOUNT_ID},MINIMUM VDEF:${MOUNT_ID}avg=${MOUNT_ID},AVERAGE GPRINT:${MOUNT_ID}max:MAX\:%6.0lf GPRINT:${MOUNT_ID}avg:AVG\:%6.0lf GPRINT:${MOUNT_ID}min:MIN\:%6.0lf\\c"
 		OUTLINE="$OUTLINE LINE1:${MOUNT_ID}show#${A_COLOR_DARK[$NUM]}:"
 	    done
 	    # create the graph
@@ -171,12 +174,12 @@ else
 		    --end now --start end-${DISPLAY_TIME} \
 		    --vertical-label "listeners" \
 		    $DEFLINE \
-		    $TESTLINE \
 		    $CDEFLINE \
 		    $AREALINE \
 		    $OUTLINE \
 		    COMMENT:"  ${TOTALSTRING}${TOTALSPACE}" \
 		    VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c"  > dev/null 2>&1
+#TEST		    $TESTLINE \
 	    done
 	done
 	indexer $CUSTOMER
