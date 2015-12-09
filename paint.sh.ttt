@@ -4,7 +4,6 @@ CUSTOMER=$2
 OIFS=$IFS; IFS=$'|'; A_GROUPMARKERS=($(echo "$3")); IFS=$OIFS
 A_GROUPMARKERS+=('_')
 
-
 #LOOP=300
 #CUSTOMER=bbradio
 test -z $LOOP && exit;
@@ -85,7 +84,6 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			-h 200 -w 800 \
 			--rigid \
 			--pango-markup \
-			--x-grid MINUTE:10:HOUR:1:MINUTE:60:0:%R \
 			--upper-limit 100 \
 			--lower-limit 0 \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \

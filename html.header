@@ -3,5 +3,7 @@
 	<link rel=stylesheet type="text/css" href="main.css">
     </header>
     <body>
-	Welcome <blink><CUSTOMER></blink>!<p>
+	Welcome <CUSTOMER>!<p>
+	Attention: Time is always UTC!<p>
 	Select your observation period: <TIMEMODELINE><p><hr>
+	
