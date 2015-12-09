@@ -82,10 +82,9 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // CPU load" \
 			--watermark " $MACHINE_IP @ $(date) " \
-			-h 200 -w 800 \
+			-h 200 -w 1000 \
 			--rigid \
 			--pango-markup \
-			--x-grid MINUTE:10:HOUR:1:MINUTE:60:0:%R \
 			--upper-limit 100 \
 			--lower-limit 0 \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
@@ -101,7 +100,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // Bandwidth load" \
 			--watermark " $MACHINE_IP @ $(date) " \
-			-h 200 -w 800 \
+			-h 200 -w 1000 \
 			--lower-limit 0 \
 			--rigid \
 			--pango-markup \
@@ -175,7 +174,7 @@ else
 		    --font DEFAULT:7: \
 		    --title "$CUSTOMER // Listeners" \
 		    --watermark " $CUSTOMER // simulcast @ $(date) " \
-		    -h 400 -w 800 \
+		    -h 400 -w 1000 \
 		    --rigid \
 		    --alt-autoscale-max \
 		    --lower-limit 0 \
