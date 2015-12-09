@@ -5,4 +5,4 @@
     <body>
 	Welcome <blink><CUSTOMER></blink>!<p>
 	Select your observation period: <TIMEMODELINE><p>
-	Your current status is:<p><hr>
+	<a href='logs/'>LOGS</a><p><hr>
