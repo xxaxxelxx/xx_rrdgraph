@@ -4,5 +4,4 @@
     </header>
     <body>
 	Welcome <blink><CUSTOMER></blink>!<p>
-	Select your observation period: <TIMEMODELINE><p>
-	<a href='logs/'>LOGS</a><p><hr>
+	Select your observation period: <TIMEMODELINE><p><hr>

@@ -32,6 +32,9 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
 	sed "s|<CUSTOMER>|$CUSTOMER|g" | \
 	sed "s|<TIMEMODELINE>|$TIMEMODELINE|g" \
 	)
+    if [ "x$CUSTOMER" != "xadmin" ]; then
+	HEADER="$HEADER <a href='logs/'>LOGS</a><p><hr>"
+    fi
     FOOTER=$(cat html.footer | \
 	sed "s|<DATE>|$(date)|g" | \
 	sed "s|<COPYRIGHT>|<a href=https://opensource.org/licenses/MIT>MIT License</a>|g" \
