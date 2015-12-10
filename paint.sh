@@ -186,6 +186,7 @@ else
 		    $CDEFLINE \
 		    $AREALINE \
 		    $OUTLINE \
+		    LINE1:${MOUNT_ID}show#FFFFFF: \
 		    COMMENT:"  ${TOTALSTRING}${TOTALSPACE}" \
 		    VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c"  > dev/null 2>&1
 #TEST		    $TESTLINE \
