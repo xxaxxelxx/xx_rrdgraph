@@ -43,7 +43,7 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
     if [ "x$CUSTOMER" == "xadmin" ]; then
 	for PNGFILE in /customer/$CUSTOMER/*.$TIMEMODE.png; do
 	    MACHINE_ID_OLD="$MACHINE_ID"
-	    MACHINE_ID="$(PNGFILE%%\.*)"
+	    MACHINE_ID="${PNGFILE%%\.*}"
 	    if [ "x$MACHINE_ID" == "x$MACHINE_ID_OLD" ]; then
 		BODY="$BODY <img src=\"$(basename $PNGFILE)\">"
 	    else
