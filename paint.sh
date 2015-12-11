@@ -176,9 +176,8 @@ else
 		    --font DEFAULT:7: \
 		    --title "$CUSTOMER // Listeners" \
 		    --watermark " $CUSTOMER // simulcast @ $(date) " \
-		    -h 400 -w 1000 \
+		    -h 400 -w 800 \
 		    --rigid \
-		    --alt-autoscale-max \
 		    --lower-limit 0 \
 		    --pango-markup \
 		    -c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
@@ -192,6 +191,7 @@ else
 		    COMMENT:"  ${TOTALSTRING}${TOTALSPACE}" \
 		    VDEF:allcur=${MOUNT_ID}show,LAST VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allcur:"CUR\:%6.0lf" GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c"  > dev/null 2>&1
 #TEST		    $TESTLINE \
+#		    --alt-autoscale-max \
 	    done
 	done
 	indexer $CUSTOMER
