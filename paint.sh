@@ -106,15 +106,13 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--pango-markup \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
-			--vertical-label "Bandwidth load in bit/s" \
+			--vertical-label "Bandwidth load in kbps" \
 			--alt-autoscale-max \
-			DEF:bwkbit=$RRDFILE:bw:MAX \
-			DEF:bwkbitlimit=$RRDFILE:bwlimit:MAX \
-			VDEF:bw=bwkbit,1000,* \
-			VDEF:bwlimit=bwkbitlimit,1000,* \
+			DEF:bw=$RRDFILE:bw:MAX \
+			DEF:bwlimit=$RRDFILE:bwlimit:MAX \
 			AREA:bw#00FF00:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
-			GPRINT:bwmax:"%6.0lf %Sbit/s MAX" GPRINT:bwavg:"%6.0lf %Sbit/s AVG" GPRINT:bwmin:"%6.0lf %Sbit/s MINX\\c" \
+			GPRINT:bwmax:"%6.0lf kbps MAX" GPRINT:bwavg:"%6.0lf kbps AVG" GPRINT:bwmin:"%6.0lf kbps MIN\\c" \
 			LINE1:bw#0000FF: \
 			LINE1:bwlimit#DC143C:  > dev/null 2>&1
 		done
