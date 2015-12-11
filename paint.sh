@@ -114,7 +114,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			VDEF:bwlimit=bwkbitlimit,1000,* \
 			AREA:bw#00FF00:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
-			GPRINT:bwmax:"%6.0lf %Sbit/s MAX" GPRINT:bwavg:"%6.0lf %Sbit/s AVG" GPRINT:bwmin:"%6.0lf %Sbit/s MIN\\c" \
+			GPRINT:bwmax:"%6.0lf %Sbit/s MAX" GPRINT:bwavg:"%6.0lf %Sbit/s AVG" GPRINT:bwmin:"%6.0lf %Sbit/s MINX\\c" \
 			LINE1:bw#0000FF: \
 			LINE1:bwlimit#DC143C:  > dev/null 2>&1
 		done
