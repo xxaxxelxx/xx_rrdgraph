@@ -47,7 +47,7 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
 	    if [ "x$MACHINE_ID" == "x$MACHINE_ID_OLD" ]; then
 		BODY="$BODY <img src=\"$(basename $PNGFILE)\">"
 	    else
-		BODY="<p><img src=\"$(basename $PNGFILE)\">"
+		BODY="$BODY <p><img src=\"$(basename $PNGFILE)\">"
 	    fi
 	done	    
     else
@@ -110,11 +110,11 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--alt-autoscale-max \
 			DEF:bwkbit=$RRDFILE:bw:MAX \
 			DEF:bwkbitlimit=$RRDFILE:bwlimit:MAX \
-			VDEF:bw=bwkbit,1000,* \
-			VDEF:bwlimit=bwkbitlimit,1000,* \
+			CDEF:bw=bwkbit,1000,* \
+			CDEF:bwlimit=bwkbitlimit,1000,* \
 			AREA:bw#00FF00:"Bandwidth load in kbps" \
 			VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
-			GPRINT:bwmax:"%6.0lf %Sbit/s MAX" GPRINT:bwavg:"%6.0lf %Sbit/s AVG" GPRINT:bwmin:"%6.0lf %Sbit/s MINX\\c" \
+			GPRINT:bwmax:"%6.0lf %Sbit/s MAX" GPRINT:bwavg:"%6.0lf %Sbit/s AVG" GPRINT:bwmin:"%6.0lf %Sbit/s MIN\\c" \
 			LINE1:bw#0000FF: \
 			LINE1:bwlimit#DC143C:  > dev/null 2>&1
 		done
