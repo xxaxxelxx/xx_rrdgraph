@@ -82,7 +82,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // CPU load" \
 			--watermark " $MACHINE_IP @ $(date) " \
-			-h 200 -w 800 \
+			-h 200 -w 1000 \
 			--rigid \
 			--pango-markup \
 			--upper-limit 100 \
@@ -100,7 +100,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // Bandwidth load" \
 			--watermark " $MACHINE_IP @ $(date) " \
-			-h 200 -w 800 \
+			-h 200 -w 1000 \
 			--lower-limit 0 \
 			--rigid \
 			--pango-markup \
