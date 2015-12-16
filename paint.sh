@@ -87,7 +87,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--pango-markup \
 			--upper-limit 100 \
 			--lower-limit 0 \
-			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF -c GRID#99999999 \
+			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "CPU load in %" \
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
