@@ -87,7 +87,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--pango-markup \
 			--upper-limit 100 \
 			--lower-limit 0 \
-			--x-grid HOUR:1 \
+			--x-grid MINUTE:15:HOUR:1:MINUTE:60:0:%R \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "CPU load in %" \
