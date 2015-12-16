@@ -78,16 +78,23 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 		RRDFILE_BNAME_BODY="${RRDFILE_BNAME%*\.rrd}"
 		MACHINE_IP="$(echo $RRDFILE_BNAME_BODY | sed 's|_||' | sed 's|\-|\.|g')"
 		for DISPLAY_TIME in $DISPLAY_TIME_LIST; do
+		    case $DISPLAY_TIME in
+			1d)
+			    GRIDSTYLE="--x-grid MINUTE:15:HOUR:1:MINUTE:120:0:%R"
+			;;
+			*)
+			    GRIDSTYLE=""
+			;;
+		    esac
 		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.cpuload.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // CPU load" \
 			--watermark " $MACHINE_IP @ $(date) " \
-			-h 200 -w 800 \
+			-h 200 -w 800 $GRIDSTYLE \
 			--rigid \
 			--pango-markup \
 			--upper-limit 100 \
 			--lower-limit 0 \
-			--x-grid MINUTE:15:HOUR:1:MINUTE:120:0:%R \
 			-c CANVAS#000000 -c BACK#000000 -c FONT#FFFFFF \
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "CPU load in %" \
@@ -102,7 +109,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--font DEFAULT:7: \
 			--title "$MACHINE_IP // Bandwidth load" \
 			--watermark " $MACHINE_IP @ $(date) " \
-			-h 200 -w 800 \
+			-h 200 -w 800 $GRIDSTYLE \
 			--lower-limit 0 \
 			--rigid \
 			--pango-markup \
