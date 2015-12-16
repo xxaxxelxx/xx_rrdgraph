@@ -95,7 +95,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			VDEF:cpuloadcur=cpuload,LAST VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
 			GPRINT:cpuloadcur:"%6.0lf%S%% CUR" GPRINT:cpuloadmax:"%6.0lf%S%% MAX" GPRINT:cpuloadavg:"%6.0lf%S%% AVG" GPRINT:cpuloadmin:"%6.0lf%S%% MIN\\c" \
 			LINE1:cpuload#0000FF: \
-			LINE1:90#FFFFFF::dashes > dev/null 2>&1
+			LINE1:90#FFFFFF77::dashes > dev/null 2>&1
 
 		    rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.bwload.${DISPLAY_TIME}.png --slope-mode \
 			--font DEFAULT:7: \
