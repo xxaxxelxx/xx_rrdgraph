@@ -1,7 +1,7 @@
 #!/bin/bash
 LOOP=$1
 CUSTOMER=$2
-OIFS=$IFS; IFS=$'+'; A_GROUPMARKERS=($(echo "$3")); IFS=$OIFS
+OIFS=$IFS; IFS=$'|'; A_GROUPMARKERS=($(echo "$3")); IFS=$OIFS
 A_GROUPMARKERS+=('_')
 
 
@@ -179,21 +179,13 @@ else
 	    done
 	    # create the graph
 	    for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
-		case $DISPLAY_TIME in
-		    1d)
-			GRIDSTYLE="--x-grid MINUTE:15:HOUR:1:MINUTE:120:0:%R"
-		    ;;
-		    *)
-		        GRIDSTYLE=""
-		    ;;
-		esac
 		TOTALSPACELEN=$(($MAXPRINTLEN - ${#TOTALSTRING}))
 		TOTALSPACE="$(for a in `seq $TOTALSPACELEN`; do echo -n '&#32;'; done)"
 		rrdtool graph /customer/$CUSTOMER/$CUSTOMER.$GROUPMARKER.${DISPLAY_TIME}.png --slope-mode \
 		    --font DEFAULT:7: \
 		    --title "$CUSTOMER // Listeners" \
 		    --watermark " $CUSTOMER // listeners @ $(date) " \
-		    -h 400 -w 800 $GRIDSTYLE \
+		    -h 400 -w 800 \
 		    --rigid \
 		    --lower-limit 0 \
 		    --pango-markup \
