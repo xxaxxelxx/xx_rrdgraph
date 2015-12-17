@@ -99,7 +99,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			--end now --start end-${DISPLAY_TIME} \
 			--vertical-label "CPU load in %" \
 			DEF:cpuload=$RRDFILE:cpuload:MAX \
-			AREA:cpuload#DC143C:"cpu load in %" \
+			AREA:cpuload#0080FF:"cpu load in %" \
 			VDEF:cpuloadcur=cpuload,LAST VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
 			GPRINT:cpuloadcur:"%6.0lf%S%% CUR" GPRINT:cpuloadmax:"%6.0lf%S%% MAX" GPRINT:cpuloadavg:"%6.0lf%S%% AVG" GPRINT:cpuloadmin:"%6.0lf%S%% MIN\\c" \
 			LINE1:cpuload#0000FF: \
@@ -121,7 +121,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			DEF:bwkbitlimit=$RRDFILE:bwlimit:MAX \
 			CDEF:bw=bwkbit,1000,* \
 			CDEF:bwlimit=bwkbitlimit,1000,* \
-			AREA:bw#00FF00:"Bandwidth load" \
+			AREA:bw#00FF40:"Bandwidth load" \
 			VDEF:bwcur=bw,LAST VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
 			GPRINT:bwcur:"%6.0lf %Sbit/s CUR" GPRINT:bwmax:"%6.0lf %Sbit/s MAX" GPRINT:bwavg:"%6.0lf %Sbit/s AVG" GPRINT:bwmin:"%6.0lf %Sbit/s MIN\\c" \
 			LINE1:bw#0000FF: \
@@ -193,7 +193,7 @@ else
 		    --font DEFAULT:7: \
 		    --title "$CUSTOMER // Listeners" \
 		    --watermark " $CUSTOMER // listeners @ $(date) " \
-		    -h 400 -w 800 $GRIDSTYLE \
+		    -h 400 -w 1200 $GRIDSTYLE \
 		    --rigid \
 		    --lower-limit 0 \
 		    --pango-markup \
