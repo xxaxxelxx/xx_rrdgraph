@@ -181,7 +181,7 @@ else
 	    for DISPLAY_TIME in $DISPLAY_TIME_LIST; do		    
 		case $DISPLAY_TIME in
 		    1d)
-			GRIDSTYLE="--x-grid MINUTE:15:HOUR:1:MINUTE:120:0:%R"
+			GRIDSTYLE="--x-grid MINUTE:15:HOUR:1:MINUTE:60:0:%R"
 		    ;;
 		    *)
 		        GRIDSTYLE=""
