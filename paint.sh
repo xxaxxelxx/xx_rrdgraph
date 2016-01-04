@@ -101,7 +101,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			    --alt-autoscale-max \
 			    DEF:bwkbit=$RRDFILE:bw:MAX \
 			    CDEF:bw=bwkbit,1000,* \
-			    AREA:bw#654321:"Bandwidth load" \
+			    AREA:bw#ff8000:"Bandwidth load" \
 			    VDEF:bwcur=bw,LAST VDEF:bwmax=bw,MAXIMUM VDEF:bwavg=bw,AVERAGE VDEF:bwmin=bw,MINIMUM \
 			    GPRINT:bwcur:"%6.0lf %Sbit/s CUR" GPRINT:bwmax:"%6.0lf %Sbit/s MAX" GPRINT:bwavg:"%6.0lf %Sbit/s AVG" GPRINT:bwmin:"%6.0lf %Sbit/s MIN\\c" \
 			    LINE1:bw#0000FF: > dev/null 2>&1
@@ -123,9 +123,7 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			    VDEF:listcur=listeners,LAST VDEF:listmax=listeners,MAXIMUM VDEF:listavg=listeners,AVERAGE VDEF:listmin=listeners,MINIMUM \
 			    GPRINT:listcur:"%6.0lf CUR" GPRINT:listmax:"%6.0lf MAX" GPRINT:listavg:"%6.0lf AVG" GPRINT:listmin:"%6.0lf MIN\\c" \
 			    LINE1:listeners#0000FF: > dev/null 2>&1
-#			    GPRINT:listcur:"%6.0lf %S CUR" GPRINT:listmax:"%6.0lf %S MAX" GPRINT:listavg:"%6.0lf %S AVG" GPRINT:listmin:"%6.0lf %S MIN\\c" \
 		    else
-continue
 			rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.cpuload.${DISPLAY_TIME}.png --slope-mode \
 			    --font DEFAULT:7: \
 			    --title "$MACHINE_IP // CPU load" \
