@@ -121,9 +121,9 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			    DEF:listeners=$RRDFILE:listeners:MAX \
 			    AREA:listeners#123456:"Listeners" \
 			    VDEF:listcur=listeners,LAST VDEF:listmax=listeners,MAXIMUM VDEF:listavg=listeners,AVERAGE VDEF:listmin=listeners,MINIMUM \
-#			    GPRINT:listcur:"%6.0lf %S CUR" GPRINT:listmax:"%6.0lf %S MAX" GPRINT:listavg:"%6.0lf %S AVG" GPRINT:listmin:"%6.0lf %S MIN\\c" \
 			    GPRINT:listcur:"%6.0lf CUR" GPRINT:listmax:"%6.0lf MAX" GPRINT:listavg:"%6.0lf AVG" GPRINT:listmin:"%6.0lf MIN\\c" \
 			    LINE1:listeners#0000FF: > dev/null 2>&1
+#			    GPRINT:listcur:"%6.0lf %S CUR" GPRINT:listmax:"%6.0lf %S MAX" GPRINT:listavg:"%6.0lf %S AVG" GPRINT:listmin:"%6.0lf %S MIN\\c" \
 		    else
 			rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.cpuload.${DISPLAY_TIME}.png --slope-mode \
 			    --font DEFAULT:7: \
