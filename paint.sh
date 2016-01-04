@@ -119,10 +119,9 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			    --vertical-label "Listeners" \
 			    --alt-autoscale-max \
 			    DEF:listeners=$RRDFILE:listeners:MAX \
-			    CDEF:listeners=bwkbit,1,* \
-			    AREA:bw#00FF40:"Listeners" \
+			    AREA:listeners#00FF40:"Listeners" \
 			    VDEF:listcur=listeners,LAST VDEF:listmax=listeners,MAXIMUM VDEF:listavg=listeners,AVERAGE VDEF:listmin=listeners,MINIMUM \
-			    GPRINT:listenerscur:"%6.0lf %S CUR" GPRINT:listenersmax:"%6.0lf %S MAX" GPRINT:listenersavg:"%6.0lf %S AVG" GPRINT:listenersmin:"%6.0lf %S MIN\\c" \
+			    GPRINT:listecur:"%6.0lf %S CUR" GPRINT:listmax:"%6.0lf %S MAX" GPRINT:listavg:"%6.0lf %S AVG" GPRINT:listmin:"%6.0lf %S MIN\\c" \
 			    LINE1:listeners#0000FF: > dev/null 2>&1
 		    else
 			rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.cpuload.${DISPLAY_TIME}.png --slope-mode \
