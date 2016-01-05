@@ -50,7 +50,7 @@ for TIMEMODE in $DISPLAY_TIME_LIST; do
 		BODY="$BODY <p><img src=\"$(basename $PNGFILE)\">"
 	    fi
 	done	    
-	for PNGFILE in /customer/$CUSTOMER/[[:digit:]]*.$TIMEMODE.png; do
+	for PNGFILE in /customer/$CUSTOMER/_[[:digit:]]*.$TIMEMODE.png; do
 	    MACHINE_ID_OLD="$MACHINE_ID"
 	    MACHINE_ID="${PNGFILE%%\.*}"
 	    if [ "x$MACHINE_ID" == "x$MACHINE_ID_OLD" ]; then
