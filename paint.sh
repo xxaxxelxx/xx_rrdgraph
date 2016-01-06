@@ -29,7 +29,9 @@ TIMEMODELINE="$( for TMODE in $DISPLAY_TIME_LIST; do echo -n "<a href=$TMODE.htm
 
 for TIMEMODE in $DISPLAY_TIME_LIST; do
     BODY=""
+    TITLE="$(echo $CUSTOMER | tr [[:lower:]] [[:upper:]]) STATUS"
     HEADER=$(cat html.header | \
+	sed "s|<TITLE>|$TITLE|g" | \
 	sed "s|<CUSTOMER>|$CUSTOMER|g" | \
 	sed "s|<TIMEMODELINE>|$TIMEMODELINE|g" \
 	)
