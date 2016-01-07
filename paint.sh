@@ -257,7 +257,7 @@ else
 		    LINE1:${MOUNT_ID}show#FFFFFF: \
 		    COMMENT:"  ${TOTALSTRING}${TOTALSPACE}" \
 		    VDEF:allcur=${MOUNT_ID}show,LAST VDEF:allmax=${MOUNT_ID}show,MAXIMUM VDEF:allmin=${MOUNT_ID}show,MINIMUM VDEF:allavg=${MOUNT_ID}show,AVERAGE GPRINT:allcur:"CUR\:%6.0lf" GPRINT:allmax:"MAX\:%6.0lf" GPRINT:allavg:"AVG\:%6.0lf" GPRINT:allmin:"MIN\:%6.0lf\c" \
-		    LINE1:allavg#AAAAAA::dashes LINE1:allcur#666666::dashes  > dev/null 2>&1
+		    LINE1:allavg#555555::dashes LINE1:allcur#BBBBBB::dashes  > dev/null 2>&1
 #TEST		    $TESTLINE \
 #		    --alt-autoscale-max \
 	    done
