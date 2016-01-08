@@ -150,12 +150,11 @@ if [ "x$CUSTOMER" == "xadmin" ]; then
 			    --end now --start end-${DISPLAY_TIME} \
 			    --vertical-label "CPU load in %" \
 			    DEF:cpuload=$RRDFILE:cpuload:MAX \
-			    DEF:cpuloadlimit=$RRDFILE:cpuloadlimit:MAX \
 			    AREA:cpuload#0080FF:"cpu load in %" \
 			    VDEF:cpuloadcur=cpuload,LAST VDEF:cpuloadmax=cpuload,MAXIMUM VDEF:cpuloadavg=cpuload,AVERAGE VDEF:cpuloadmin=cpuload,MINIMUM \
 			    GPRINT:cpuloadcur:"%6.0lf%S%% CUR" GPRINT:cpuloadmax:"%6.0lf%S%% MAX" GPRINT:cpuloadavg:"%6.0lf%S%% AVG" GPRINT:cpuloadmin:"%6.0lf%S%% MIN\\c" \
 			    LINE1:cpuload#0000FF: \
-			    LINE1:cpuloadlimit#FF0000:LIMIT:dashes > dev/null 2>&1
+			    HRULE:75#FF0000:LIMIT:dashes > dev/null 2>&1
 
 			rrdtool graph /customer/$CUSTOMER/$RRDFILE_BNAME_BODY.bwload.${DISPLAY_TIME}.png --slope-mode \
 			    --font DEFAULT:7: \
